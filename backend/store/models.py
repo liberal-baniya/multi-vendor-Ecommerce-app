@@ -861,16 +861,14 @@ class Coupon(models.Model):
     used_by = models.ManyToManyField(User, blank=True)
     # Fields for code, type, discount, redemption, date, and more
     code = models.CharField(max_length=1000)
-    # type = models.CharField(max_length=100, choices=DISCOUNT_TYPE, default="Percentage")
+    
     discount = models.IntegerField(
         default=1, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
     # redemption = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
-    # make_public = models.BooleanField(default=False)
-    # valid_from = models.DateField()
-    # valid_to = models.DateField()
+    
     # ShortUUID field
     cid = ShortUUIDField(length=10, max_length=25, alphabet="abcdefghijklmnopqrstuvxyz")
 
@@ -886,8 +884,10 @@ class Coupon(models.Model):
 
     class Meta:
         ordering = ["-id"]
-
-
+    # make_public = models.BooleanField(default=False)
+    # valid_from = models.DateField()
+    # valid_to = models.DateField()
+    # type = models.CharField(max_length=100, choices=DISCOUNT_TYPE, default="Percentage")
 # Define a model for Coupon Users
 class CouponUsers(models.Model):
     # A foreign key relationship to the Coupon model with CASCADE deletion
