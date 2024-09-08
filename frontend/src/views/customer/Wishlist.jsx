@@ -93,7 +93,7 @@ function Wishlist() {
                                                                         <h6 className="card-title mb-3 ">{w.product.title.slice(0, 30)}...</h6>
                                                                     </a>
                                                                     <a href="" className="text-reset">
-                                                                        <p>{w.product?.brand.title}</p>
+                                                                        <p>{w.product?.brand?.title}</p>
                                                                     </a>
                                                                     <h6 className="mb-3">{w.product.price}</h6>
 

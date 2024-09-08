@@ -598,6 +598,7 @@ class PaymentSuccessView(generics.CreateAPIView):
             session = stripe.checkout.Session.retrieve(session_id)
 
             if session.payment_status == "paid":
+                #change processing to pending
                 if order.payment_status == "processing":
                     order.payment_status = "paid"
                     order.save()

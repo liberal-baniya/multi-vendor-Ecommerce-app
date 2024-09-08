@@ -277,7 +277,8 @@ function Checkout() {
                               {
                                 amount: {
                                   currency_code: "USD",
-                                  value: order.total.toString()
+                                  // value: order.total.toString()
+                                  value: (order.total ? order.total.toString() : "0.00")
                                 }
                               }
                             ]

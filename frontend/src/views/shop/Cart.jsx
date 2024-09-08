@@ -80,7 +80,7 @@ function Cart() {
             initialQuantities[c.product.id] = c.qty
         });
         setProductQuantities(initialQuantities);
-    }, [productQuantities]);
+    }, []);
 
     const handleQtyChange = (event, product_id) => {
         const quantity = event.target.value;

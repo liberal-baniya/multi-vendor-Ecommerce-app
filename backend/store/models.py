@@ -13,6 +13,7 @@ from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from decimal import Decimal
 
 
 from userauths.models import User, user_directory_path, Profile
@@ -313,10 +314,14 @@ class Product(models.Model):
         return Product.objects.filter(category__in=self.category).count()
 
     # Calculates the discount percentage between old and new prices
+    # def get_precentage(self):
+    #     new_price = ((self.old_price - self.price) / self.old_price) * 100
+    #     return round(new_price, 0)
     def get_precentage(self):
+        if self.old_price == 0 or self.old_price is None:
+            return 0  # Return 0 or any default value you prefer when old_price is zero or undefined
         new_price = ((self.old_price - self.price) / self.old_price) * 100
         return round(new_price, 0)
-
     # Calculates the average rating of the product
     def product_rating(self):
         product_rating = Review.objects.filter(product=self).aggregate(
@@ -793,7 +798,9 @@ class Notification(models.Model):
         else:
             return "Notification"
 
-
+# Summary
+# Use on_delete=CASCADE when deleting a parent object should result in the deletion of all related child objects.
+# Use on_delete=SET_NULL when deleting a parent object should leave the child objects intact, but their reference to the parent should be removed (set to NULL). This is particularly useful when the relationship is optional or when you want to preserve related data even after the parent is deleted.
 # Define a model for Address
 class Address(models.Model):
     # A foreign key relationship to the User model with CASCADE deletion
@@ -850,13 +857,14 @@ class CancelledOrder(models.Model):
         else:
             return "Cancelled Order"
 
-
+# In summary, on_delete=SET_NULL is used here to maintain the integrity and continuity of the Coupon data even if the associated Vendor is deleted. It allows for the vendor reference to be set to NULL while keeping the coupon record itself, which can be crucial for historical data, reporting, or maintaining a record of past promotions.
 # Define a model for Coupon
 class Coupon(models.Model):
     # A foreign key relationship to the Vendor model with SET_NULL option, allowing null values, and specifying a related name
     vendor = models.ForeignKey(
         Vendor, on_delete=models.SET_NULL, null=True, related_name="coupon_vendor"
     )
+    
     # Many-to-many relationship with User model for users who used the coupon
     used_by = models.ManyToManyField(User, blank=True)
     # Fields for code, type, discount, redemption, date, and more
